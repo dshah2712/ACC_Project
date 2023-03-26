@@ -24,16 +24,19 @@ public class htmlConverter {
 			}
 
 			File[] filesList = htmlFile.listFiles();
-			
+
 			// loop to save the converted files in textPages folder
 			for (File filesPath : filesList) {
-
 				docFile = Jsoup.parse(filesPath, "UTF-8");
 				String textString = docFile.text();
-				String filesName = filesPath.getName().substring(0, filesPath.getName().lastIndexOf('.'));
-				BufferedWriter bufferWriter = new BufferedWriter(new FileWriter("src/textPages/" + filesName + ".txt"));
-				bufferWriter.write(textString);
-				bufferWriter.close();
+				// Parse and convert only the html files
+				if (filesPath.getName().contains(".html")) {
+					String filesName = filesPath.getName().substring(0, filesPath.getName().lastIndexOf('.'));
+					BufferedWriter bufferWriter = new BufferedWriter(
+							new FileWriter("src/textPages/" + filesName + ".txt"));
+					bufferWriter.write(textString);
+					bufferWriter.close();
+				}
 			}
 
 		} catch (Exception e) {
