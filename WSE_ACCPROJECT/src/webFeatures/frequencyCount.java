@@ -12,42 +12,49 @@ import java.util.regex.Pattern;
 public class frequencyCount {
 
 	public static void frqCount(String wordtocount) throws FileNotFoundException, IOException {
-
 		try {
-
-			// path to text files
+			// Get the path to the directory containing the text files
 			File filePath = new File("src/textPages");
+
+			// Get a list of all files in the directory
 			File[] allPathFiles = filePath.listFiles();
 
+			// Iterate through each file in the directory
 			for (int i = 0; i < allPathFiles.length; i++) {
 				int count = 0;
+
+				// Only process the file if it is a regular file (not a directory)
 				if (allPathFiles[i].isFile()) {
-
-					File mainFile = new File("src/textPages/" + allPathFiles[i].getName());
-
-					InputStreamReader inputReader = new InputStreamReader(new FileInputStream(mainFile), "utf-8");
-					BufferedReader bufferIN = new BufferedReader(inputReader);
+					// Open the file for reading
+					File file = new File("src/textPages/" + allPathFiles[i].getName());
+					InputStreamReader iReader = new InputStreamReader(new FileInputStream(file), "utf-8");
+					BufferedReader bReader = new BufferedReader(iReader);
 					StringBuffer wordFind = new StringBuffer();
-					String stringToSearch = null;
+					String data = null;
 
-					// variable to count the occurrences of words
-					while ((stringToSearch = bufferIN.readLine()) != null) {
-						wordFind.append(stringToSearch);
+					// Read the contents of the file into a buffer
+					while ((data = bReader.readLine()) != null) {
+						wordFind.append(data);
 					}
 
-					Pattern pattern = Pattern.compile(wordtocount);
+					// Use a regular expression to search for the given word
+					Pattern pattern = Pattern.compile(wordtocount, Pattern.CASE_INSENSITIVE);
 					Matcher matcher = pattern.matcher(wordFind);
 					while (matcher.find()) {
+						// Increment the counter for each match found
 						count++;
 					}
 
-					bufferIN.close();
+					// Close the file reader
+					bReader.close();
+
+					// Print the count and file name
 					System.out.println(
 							"Total Count : " + count + "\nHTML file name : " + allPathFiles[i].getName() + "\n");
 				}
 			}
-
 		} catch (IOException e) {
+			// Handle any exceptions that occur while reading the files
 			e.printStackTrace();
 		}
 	}
