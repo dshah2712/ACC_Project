@@ -1,0 +1,6 @@
+{
+  "java.project.referencedLibraries": [
+    "lib/**/*.jar",
+    "WSE_ACCPROJECT/jsoup-1.6.0.jar"
+  ]
+}
