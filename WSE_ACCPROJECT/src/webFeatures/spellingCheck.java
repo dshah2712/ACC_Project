@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class spellingCheck {
 
-	// Calculate the distance between two words
+	// Calculate the distance between two words using Edit Distance
 	public static int editDistance(String str1, String str2) {
 		int w1Len = str1.length();
 		int w2Len = str2.length();
@@ -25,11 +25,11 @@ public class spellingCheck {
 					arr1[k + 1][l + 1] = arr1[k][l];
 				} else {
 					int replace = arr1[k][l] + 1;
-					int insert = arr1[k][l + 1] + 1;
-					int delete = arr1[k + 1][l] + 1;
+					int ins = arr1[k][l + 1] + 1;
+					int del = arr1[k + 1][l] + 1;
 
-					int min = replace > insert ? insert : replace;
-					min = delete > min ? min : delete;
+					int min = replace > ins ? ins : replace;
+					min = del > min ? min : del;
 					arr1[k + 1][l + 1] = min;
 				}
 			}
@@ -49,24 +49,24 @@ public class spellingCheck {
 
 			reader = new BufferedReader(new FileReader(str2));
 			String file;
-			int flag = 0;
-			String suggWord = "";
+			int flagCount = 0;
+			String suggestedWord = "";
 			while ((file = reader.readLine()) != null) {
 				int diff = editDistance(strWord, file);
 				
 				if (diff == 0) {
-					flag = 1;
+					flagCount = 1;
 					break;
 				}
 				else {
 					if (wlength == file.length() && (diff <= 2)) {
-						suggWord = suggWord + " \n " + file;
+						suggestedWord = suggestedWord + " \n " + file;
 					}
 				}
 			}
 
-			if ((flag == 0) && suggWord != "") {
-				System.out.println("The word " + strWord + " is incorrect. " + "\nDid you mean?: " + suggWord + " ");
+			if ((flagCount == 0) && suggestedWord != "") {
+				System.out.println("The word " + strWord + " is incorrect. \n (This suggestion are from the dictionary) " + "\nDid you mean?: " + suggestedWord + " ");
 				return false;
 			}else {
 				return true;	
