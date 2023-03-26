@@ -21,6 +21,7 @@ public class spellingCheck {
 			char c1 = str1.charAt(k);
 			for (int l = 0; l < w2Len; l++) {
 				char c2 = str2.charAt(l);
+				// check for string comparison and if found then increase the count else not
 				if (c1 == c2) {
 					arr1[k + 1][l + 1] = arr1[k][l];
 				} else {
@@ -39,21 +40,21 @@ public class spellingCheck {
 
 	// Checks the Spelling of each word in the HTML files and matches them with the
 	// dictionary words available in words.txt.
-	// Print out the suggestion for the incorrect words
+
 	public static Boolean SpellCheck(String s) throws IOException {
 		String strWord = s.toLowerCase();
 		int wlength = strWord.length();
 		String str2 = "src/utilities/words.txt";
 		BufferedReader reader = null;
 		try {
-
+// to read the file
 			reader = new BufferedReader(new FileReader(str2));
 			String file;
 			int flagCount = 0;
 			String suggestedWord = "";
 			while ((file = reader.readLine()) != null) {
 				int diff = editDistance(strWord, file);
-				
+				// if difference is found then check for suggestion
 				if (diff == 0) {
 					flagCount = 1;
 					break;
@@ -64,7 +65,7 @@ public class spellingCheck {
 					}
 				}
 			}
-
+			// Print out the suggestion for the incorrect words
 			if ((flagCount == 0) && suggestedWord != "") {
 				System.out.println("The word " + strWord + " is incorrect. \n (This suggestion are from the dictionary) " + "\nDid you mean?: " + suggestedWord + " ");
 				return false;
